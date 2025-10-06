@@ -33,89 +33,73 @@ Publish the website in the given URL.
 
 ## PROGRAM :
 ~~~
-math.html
-
+power.html
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Rectangle Area</title>
+    <title>Lamp Power Calculator</title>
+    <style>
+        body { font-family: Arial; background: #f0f0f0; text-align: center; padding: 50px; }
+        form { background: #fff; padding: 20px; border-radius: 10px; display: inline-block; }
+        input { margin: 5px; padding: 8px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; }
+    </style>
 </head>
 <body>
-    <h2>Calculate Rectangle Area</h2>
-
-    <form method="POST">
+    <h2>💡 Lamp Power Calculator</h2>
+    <form method="post">
         {% csrf_token %}
-        <label for="length">Length:</label>
-        <input type="text" id="length" name="length" value="{{ l }}">
-        <br><br>
-
-        <label for="breadth">Breadth:</label>
-        <input type="text" id="breadth" name="breadth" value="{{ b }}">
-        <br><br>
-
-        <button type="submit">Calculate</button>
+        <label>Intensity (I in Amperes):</label><br>
+        <input type="number" step="any" name="intensity" required><br>
+        <label>Resistance (R in Ohms):</label><br>
+        <input type="number" step="any" name="resistance" required><br>
+        <button type="submit">Calculate Power</button>
     </form>
 
-    <hr>
-
-    <p><strong>Length:</strong> {{ l }}</p>
-    <p><strong>Breadth:</strong> {{ b }}</p>
-    <p><strong>Area:</strong> {{ area }}</p>
-
+    {% if result %}
+        <h3>Power (P) = {{ result }} Watts</h3>
+    {% endif %}
 </body>
 </html>
 
-views.py
-
+view.py
 from django.shortcuts import render
 
-def rectarea(request):
-    context = {}
-    context['area'] = "0"
-    context['l'] = "0"
-    context['b'] = "0"
+def power(request):
+    result = None
+    if request.method == 'POST':
+        try:
+            intensity = float(request.POST.get('intensity'))
+            resistance = float(request.POST.get('resistance'))
+            result = intensity ** 2 * resistance
+        except:
+            result = "Invalid input!"
+    return render(request, 'lampapp/power.html', {'result': result})
 
-    if request.method == "POST":
-        print("POST method is used")
-        l = request.POST.get('length', '0')
-        b = request.POST.get('breadth', '0')
+    urls.py
 
-        print("request:", request)
-        print("length:", l)
-        print("breadth:", b)
-
-        area = int(l) * int(b)
-
-        context['area'] = area
-        context['l'] = l
-        context['b'] = b
-
-        print("Area:", area)
-
-    return render(request, "mathapp/math.html", context)
-
-
-urls.py
-
-from django.contrib import admin
-from django.urls import path
-from mathapp import views
+    from django.urls import path
+from lampapp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('areaofrectangle/', views.rectarea, name="areaofrectangle"),
-    path('',views.rectarea,name="areaofrectangleroot"),
+    path('', views.power, name='power'),
 ]
+
+
+
+
+
 
 ~~~
 
 ## SERVER SIDE PROCESSING:
-<img width="1029" height="484" alt="Screenshot 2025-09-29 155230" src="https://github.com/user-attachments/assets/765b2aac-e765-4e3a-a93b-ee0e4722af3b" />
+![screenshot1](https://github.com/user-attachments/assets/6c8254fb-26a0-4b15-9330-41622c21f063)
+
 
 
 ## HOMEPAGE:
-<img width="1339" height="478" alt="Screenshot 2025-09-29 154320" src="https://github.com/user-attachments/assets/13720278-c400-43fa-93fb-f1ca0695ac35" />
+<img width="1437" height="871" alt="Screenshot 2025-09-17 113406" src="https://github.com/user-attachments/assets/3543d891-976e-4298-b461-5622a4656a86" />
+
 
 
 ## RESULT:
