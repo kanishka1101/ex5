@@ -98,7 +98,8 @@ urlpatterns = [
 
 
 ## HOMEPAGE:
-<img width="1437" height="871" alt="Screenshot 2025-09-17 113406" src="https://github.com/user-attachments/assets/3543d891-976e-4298-b461-5622a4656a86" />
+<img width="1424" height="443" alt="Screenshot 2025-10-06 144422" src="https://github.com/user-attachments/assets/551f37c0-4e92-4011-8f88-40a011b3b5e5" />
+
 
 
 
